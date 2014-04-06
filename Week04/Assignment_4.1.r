@@ -1,0 +1,60 @@
+setwd("C:/Thirumal/Learning/edX/The Analytics Edge/Week 04/Assignment")
+gerber = read.csv("gerber.csv")
+library(caTools)
+str(gerber)
+#1.1
+mean(gerber$voting)
+#question 1.2
+tapply(gerber$voting, gerber$hawthorne, mean)
+tapply(gerber$voting, gerber$civicduty, mean)
+tapply(gerber$voting, gerber$self, mean)
+tapply(gerber$voting, gerber$neighbors, mean)
+#1.3 logistic regression model
+logGerber = glm(voting ~ hawthorne + civicduty + self + neighbors,data=gerber, family = "binomial")
+predGerber = predict(logGerber)
+talbe(gerber$voting, predGerber >= 0.3)
+table(gerber$voting, predGerber >= 0.3)
+235388/(108696+235388)
+predGerber = predict(logGerber, type="response")
+table(gerber$voting, predGerber >= 0.3)
+(134513+51966)/(134513+100875+56730+51966)
+#the above answers for 1.4 as well
+#1.5 accuracy of the model when threshold is 0.5
+table(gerber$voting, predGerber >= 0.5)
+235388/(108696+235388)
+CARTmodel = rpart(voting ~ civicduty + hawthorne + self + neighbors, data=gerber)
+library(rpart)
+library(rpart.plot)
+#2.1
+CARTmodel = rpart(voting ~ civicduty + hawthorne + self + neighbors, data=gerber)
+rpr(CARTmodel)
+prp(CARTmodel)
+CARTmodel2 = rpart(voting ~ civicduty + hawthorne + self + neighbors, data=gerber, cp=0.0)
+prp(CARTmodel2)
+CARTmodel3 = rpart(voting ~ civicduty + hawthorne + self + neighbors + sex, data=gerber, cp=0.0)
+prp(CARTmodel3)
+#problem 3.1
+CARTmodel4 = rpart(voting ~ control, data=gerber, cp=0.0)
+prp(CARTmodel4, digits=6)
+CARTmodel4b = rpart(voting ~ control + sex, data=gerber, cp=0.0)
+0.296638
+prp(CARTmodel4b, digits=6)
+prp(CARTmodel4, digits=6)
+(0.34-0.296638)
+prp(CARTmodel4b, digits=6)
+abs(0.334176-0.345818)
+abs(0.334176-0.345818) > 0.001
+logModel2 = glm(voting ~ control + sex, data=gerber, family = "binomial")
+summary(logModel2)
+Possibilities = data.frame(sex=c(0,0,1,1),control=c(0,1,0,1))
+predict(LogModel2, newdata=Possibilities, type="response")
+predict(logModel2, newdata=Possibilities, type="response")
+abs(0.3024455 - 0.302795)
+LogModel2 = glm(voting ~ sex + control + sex:control, data=gerber, family="binomial")
+summary(LogModel2)
+LogModel3 = glm(voting ~  sex:control, data=gerber, family="binomial")
+summary(LogModel3)
+predict(LogModel2, newdata=Possibilities, type="response")
+abs(0.3027947-0.302795)
+0.0000003
+########################################## DONE ########################
